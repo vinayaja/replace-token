@@ -1,0 +1,15 @@
+name: Build
+
+on: workflow_dispatch
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - uses: ./
+      with:
+        name: "Vinayak"

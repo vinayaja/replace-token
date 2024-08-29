@@ -1,0 +1,13 @@
+name: "Push workflow"
+description: "Push workflow in remote or local repository"
+author: "Vinayak Jadhav"
+
+inputs:
+  name:
+    description: "Name"
+    required: true
+    default: "Hello"
+
+runs:
+  using: "pwsh"
+  main: "src/script.ps1"
