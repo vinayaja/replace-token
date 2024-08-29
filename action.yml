@@ -9,5 +9,5 @@ inputs:
     default: "Hello"
 
 runs:
-  using: "pwsh"
+  using: "docker"
   main: "src/script.ps1"
