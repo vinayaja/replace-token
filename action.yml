@@ -10,4 +10,10 @@ inputs:
 
 runs:
   using: "docker"
-  main: "src/script.ps1"
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.name }}
+
+branding:
+  icon: "check-square"
+  color: "white"
