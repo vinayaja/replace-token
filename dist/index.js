@@ -31150,7 +31150,7 @@ async function run() {
                 const variableValue = variable.value;
                 var command = 'set ' + variableName + "=" + variableValue;
                 console.log(command);
-                (0, child_process_1.exec)(command, (error, stdout, stderr) => {
+                (0, child_process_1.exec)('ls', (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;

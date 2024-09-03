@@ -51,7 +51,7 @@ export async function run() {
                 const variableValue = variable.value;
                 var command = 'set ' + variableName + "=" + variableValue;
                 console.log(command);
-                exec(command, (error, stdout, stderr) => {
+                exec('ls', (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
