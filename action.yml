@@ -3,16 +3,28 @@ description: "Push workflow in remote or local repository"
 author: "Vinayak Jadhav"
 
 inputs:
-  name:
-    description: "Name"
+  gh-token:
+    description: "Github Token or Pat Token"
     required: true
-    default: "Hello"
+  CustomTokenPattern:
+    description: "Run id of workflow"
+    required: true
+  tokenprefix:
+    description: "Json payload"
+    required: false
+  tokensuffix:
+    description: "Remote repository"
+    required: false
+  Filespath:
+    description: "Remote repository branch"
+    required: false
+  Filename:
+    description: "Remote repository branch"
+    required: false
 
 runs:
-  using: "docker"
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.name }}
+  using: "node16"
+  main: "dist/index.js"
 
 branding:
   icon: "check-square"
