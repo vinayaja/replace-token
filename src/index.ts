@@ -49,9 +49,9 @@ export async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) =>{
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = 'set ' + variableName + "=" + variableValue;
+                var command = '"set ' + variableName + "=" + variableValue + '"';
                 console.log(command);
-                exec('ls', (error, stdout, stderr) => {
+                exec(command, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
