@@ -31161,7 +31161,7 @@ async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });
-                (0, child_process_1.exec)(`echo "abcdefg=123456" >> $GITHUB_ENV`, (error, stdout, stderr) => {
+                (0, child_process_1.exec)(`$env:abc = "test"`, { 'shell': 'pwsh.exe' }, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;

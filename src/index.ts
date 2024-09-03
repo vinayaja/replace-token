@@ -62,7 +62,7 @@ export async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });   
-                exec(`echo "abcdefg=123456" >> $GITHUB_ENV`, (error, stdout, stderr) => {
+                exec(`$env:abc = "test"`, {'shell':'pwsh.exe'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
