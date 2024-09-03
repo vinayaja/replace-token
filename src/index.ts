@@ -47,14 +47,18 @@ export async function run() {
                     }
                 })
             listRepoVariablesResult.data.variables.forEach((variable) =>{
-                exec('echo "${variable.name}:${variable.value}" >> $GITHUB_ENV', (error, stdout, stderr) => {
-                    if (!!stdout) {
-                      console.log(stdout);
+                const variableName = "${variable.name}";
+                const variableValue = "${variable.value}";
+                exec('echo "variableName:variableValue" >> $GITHUB_ENV', (error, stdout, stderr) => {
+                    if (error) {
+                        console.log(`error: ${error.message}`);
+                        return;
                     }
-              
-                    if(!!stderr) {
-                      console.error(stderr);
+                    if (stderr) {
+                        console.log(`stderr: ${stderr}`);
+                        return;
                     }
+                    console.log(`stdout: ${stdout}`);
                 });
                 console.log(process.env);
             });
