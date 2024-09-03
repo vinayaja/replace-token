@@ -31148,7 +31148,7 @@ async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) => {
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = '"set ' + variableName + "=" + variableValue + '"';
+                var command = '"echo "' + variableName + "=" + variableValue + '""';
                 console.log(command);
                 (0, child_process_1.exec)(command, (error, stdout, stderr) => {
                     if (error) {
