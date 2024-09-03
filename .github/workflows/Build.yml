@@ -19,5 +19,5 @@ jobs:
         CustomTokenPattern: false
 
     - run: |
-        get-process pwsh -fileVersionInfo
+        get-childitem env:
       shell: pwsh
