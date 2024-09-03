@@ -31150,18 +31150,7 @@ async function run() {
                 const variableValue = variable.value;
                 // var command = '"New-Item -Path Env:' + variableName + ' -Value ' + variableValue + '"';
                 //console.log(command);
-                (0, child_process_1.exec)(`[Environment]::SetEnvironmentVariable('${variableName}','${variableValue}')`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
-                    if (error) {
-                        console.log(`error: ${error.message}`);
-                        return;
-                    }
-                    if (stderr) {
-                        console.log(`stderr: ${stderr}`);
-                        return;
-                    }
-                    console.log(`stdout: ${stdout}`);
-                });
-                (0, child_process_1.exec)(`get-childitem env:`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
+                (0, child_process_1.exec)(`[Environment]::SetEnvironmentVariable('abcd','test')`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;

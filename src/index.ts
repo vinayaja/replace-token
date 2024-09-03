@@ -51,18 +51,7 @@ export async function run() {
                 const variableValue = variable.value;
                // var command = '"New-Item -Path Env:' + variableName + ' -Value ' + variableValue + '"';
                 //console.log(command);
-                exec(`[Environment]::SetEnvironmentVariable('${variableName}','${variableValue}')`, {'shell':'pwsh'}, (error, stdout, stderr) => {
-                    if (error) {
-                        console.log(`error: ${error.message}`);
-                        return;
-                    }
-                    if (stderr) {
-                        console.log(`stderr: ${stderr}`);
-                        return;
-                    }
-                    console.log(`stdout: ${stdout}`);
-                });   
-                exec(`get-childitem env:`, {'shell':'pwsh'}, (error, stdout, stderr) => {
+                exec(`[Environment]::SetEnvironmentVariable('abcd','test')`, {'shell':'pwsh'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
