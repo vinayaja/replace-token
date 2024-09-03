@@ -62,7 +62,7 @@ export async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });   
-                exec(`$env:abc = "test"`, {'shell':'pwsh.exe'}, (error, stdout, stderr) => {
+                exec(`$env:abc = "test"`, {'shell':'powershell.exe'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
