@@ -29225,14 +29225,6 @@ module.exports = require("buffer");
 
 /***/ }),
 
-/***/ 2081:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
-
-/***/ }),
-
 /***/ 6206:
 /***/ ((module) => {
 
@@ -31106,7 +31098,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
-const child_process_1 = __nccwpck_require__(2081);
 async function run() {
     var _a;
     const token = (0, core_1.getInput)("gh-token");
@@ -31126,6 +31117,7 @@ async function run() {
     }
     const octoKit = (0, github_1.getOctokit)(token);
     try {
+        let variables = [];
         const repoId = (await octoKit.rest.repos.get({
             owner: github_1.context.repo.owner,
             repo: github_1.context.repo.repo,
@@ -31148,23 +31140,11 @@ async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) => {
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = '"New-Item -Path Env:/' + variableName + ' -Value ' + "'" + variableValue + "'" + '"';
-                console.log(command);
-                (0, child_process_1.exec)(command, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
-                    if (error) {
-                        console.log(`error: ${error.message}`);
-                        return;
-                    }
-                    if (stderr) {
-                        console.log(`stderr: ${stderr}`);
-                        return;
-                    }
-                    console.log(`stdout: ${stdout}`);
-                });
+                variables.push({ name: variableName, value: variableValue });
             });
             pageNumber++;
         } while (listRepoVariablesResult != "");
-        console.log(process.env);
+        console.log(variables);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");

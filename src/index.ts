@@ -1,6 +1,5 @@
 import { getInput, setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
-import { exec, spawn} from "child_process";
 
 export async function run() {
     const token = getInput("gh-token");
@@ -26,6 +25,12 @@ export async function run() {
 
     try{  
         
+        interface variable {
+            name: string;
+            value: string;
+          }
+        let variables: variable[] = []
+
         const repoId = (await octoKit.rest.repos.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -48,24 +53,13 @@ export async function run() {
                 })
             listRepoVariablesResult.data.variables.forEach((variable) =>{
                 const variableName = variable.name;
-                const variableValue = variable.value;
-                var command = '"New-Item -Path Env:/' + variableName + ' -Value ' + "'" + variableValue + "'" + '"';
-                console.log(command);
-                exec(command, {'shell':'pwsh'}, (error, stdout, stderr) => {
-                    if (error) {
-                        console.log(`error: ${error.message}`);
-                        return;
-                    }
-                    if (stderr) {
-                        console.log(`stderr: ${stderr}`);
-                        return;
-                    }
-                    console.log(`stdout: ${stdout}`);
-                });    
+                const variableValue = variable.value;            
+                variables.push({ name: variableName, value: variableValue }); 
             });
             pageNumber++;
-        }while(listRepoVariablesResult != "")      
-        console.log(process.env);
+        }while(listRepoVariablesResult != "") 
+ 
+        console.log(variables);
 
     }   catch(error){
         setFailed((error as Error)?.message ?? "Unknown error");
