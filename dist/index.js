@@ -31112,7 +31112,7 @@ async function run() {
     function getFiles(dir) {
         var files = fs.readdirSync(dir);
         for (var i in files) {
-            var name = dir + '\\' + files[i];
+            var name = dir + '//' + files[i];
             if (fs.statSync(name).isDirectory()) {
                 getFiles(name);
             }

@@ -18,7 +18,7 @@ export async function run() {
     
         for (var i in files)
         {
-            var name = dir + '\\' + files[i];
+            var name = dir + '//' + files[i];
             if (fs.statSync(name).isDirectory()){
                 getFiles(name);
             } 
