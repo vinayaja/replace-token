@@ -31095,14 +31095,31 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getFiles = getFiles;
 exports.run = run;
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
+async function getFiles(dir, files_) {
+    const fs = __nccwpck_require__(7147);
+    files_ = files_ || [];
+    var files = fs.readdirSync(dir);
+    for (var i in files) {
+        var name = dir + '/' + files[i];
+        if (fs.statSync(name).isDirectory()) {
+            getFiles(name, files_);
+        }
+        else {
+            files_.push(name);
+        }
+    }
+    return files_;
+}
 async function run() {
     var _a;
     const token = (0, core_1.getInput)("gh-token");
     const customTokenPattern = new Boolean((0, core_1.getInput)("CustomTokenPattern"));
     const environmentName = (0, core_1.getInput)("Environment-Name");
+    const orgName = (0, core_1.getInput)("Org-Name");
     const filesPath = (0, core_1.getInput)("Filespath");
     const fileName = (0, core_1.getInput)("Filename");
     if (!customTokenPattern) {
@@ -31169,13 +31186,7 @@ async function run() {
             } while (listEnvVariablesResult != "");
         }
         // Get Org Variables
-        const orgName = (await octoKit.rest.orgs.get({
-            org: github_1.context.repo.owner,
-            headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
-            }
-        })).data.name;
-        if (orgName != undefined) {
+        if (orgName != "") {
             var pageNumber = 1;
             const listOrgVariablesResult = "";
             do {
@@ -31196,6 +31207,7 @@ async function run() {
             } while (listOrgVariablesResult != "");
         }
         console.log(variables);
+        console.log(getFiles(filesPath, fileName));
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");

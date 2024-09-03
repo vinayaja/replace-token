@@ -1,10 +1,29 @@
 import { getInput, setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
 
+export async function getFiles (dir:string, files_:any){
+    const fs=require('fs');
+    files_ = files_ || [];
+    var files = fs.readdirSync(dir);
+    
+    for (var i in files)
+    {
+        var name = dir + '/' + files[i];
+        if (fs.statSync(name).isDirectory()){
+            getFiles(name, files_);
+        } else 
+        {
+            files_.push(name);
+        }
+    }
+    return files_;
+}
+
 export async function run() {
     const token = getInput("gh-token");
     const customTokenPattern = new Boolean(getInput("CustomTokenPattern"));
     const environmentName = getInput("Environment-Name")
+    const orgName = getInput("Org-Name")
     const filesPath = getInput("Filespath");
     const fileName = getInput("Filename");
     
@@ -86,14 +105,7 @@ export async function run() {
         }
 
         // Get Org Variables
-        const orgName =  (await octoKit.rest.orgs.get({
-            org: context.repo.owner,
-            headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
-                }
-            })).data.name
-
-        if(orgName != undefined)
+        if(orgName != "")
         {
             var pageNumber:number = 1;
             const listOrgVariablesResult = "";
@@ -116,6 +128,7 @@ export async function run() {
         }
 
         console.log(variables);
+        console.log(getFiles(filesPath,fileName))
 
     }   catch(error){
         setFailed((error as Error)?.message ?? "Unknown error");

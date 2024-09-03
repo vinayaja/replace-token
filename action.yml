@@ -9,6 +9,9 @@ inputs:
   Environment-Name:
     description: "Environment Name"
     required: false
+  Org-Name:
+    description: "organization Name"
+    required: false
   CustomTokenPattern:
     description: "Run id of workflow"
     required: true

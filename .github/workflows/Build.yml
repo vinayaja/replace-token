@@ -18,7 +18,9 @@ jobs:
       with:
         gh-token: ${{ secrets.PAT_TOKEN }}
         CustomTokenPattern: false
-        Environment-Name: dev
+        Environment-Name: 'dev'
+        Filespath: ${{ github.workspace}}
+        FileName: '*.json'
 
     - run: |
         get-childitem env:
