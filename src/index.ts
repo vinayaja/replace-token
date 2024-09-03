@@ -49,7 +49,8 @@ export async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) =>{
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = "echo " + variableName + "=" + variableValue + " >> $GITHUB_ENV"
+                var command = "echo " + variableName + "=" + variableValue + " >> $GITHUB_ENV";
+                console.log(command);
                 exec(command, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
