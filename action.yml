@@ -6,6 +6,9 @@ inputs:
   gh-token:
     description: "Github Token or Pat Token"
     required: true
+  Environment-Name:
+    description: "Environment Name"
+    required: true
   CustomTokenPattern:
     description: "Run id of workflow"
     required: true

@@ -18,6 +18,7 @@ jobs:
       with:
         gh-token: ${{ secrets.PAT_TOKEN }}
         CustomTokenPattern: false
+        Environment-Name: dev
 
     - run: |
         get-childitem env:
