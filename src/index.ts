@@ -51,7 +51,7 @@ export async function run() {
                 const variableValue = variable.value;
                 var command = '"echo "' + variableName + "=" + variableValue + '" >> $GITHUB_ENV"';
                 console.log(command);
-                exec(`echo "${variableName}=${variableValue}" >> $GITHUB_ENV`, (error, stdout, stderr) => {
+                exec(`set ${variableName}=${variableValue}`, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
@@ -61,7 +61,18 @@ export async function run() {
                         return;
                     }
                     console.log(`stdout: ${stdout}`);
-                });      
+                });   
+                exec(`set bbbhhs=44545`, (error, stdout, stderr) => {
+                    if (error) {
+                        console.log(`error: ${error.message}`);
+                        return;
+                    }
+                    if (stderr) {
+                        console.log(`stderr: ${stderr}`);
+                        return;
+                    }
+                    console.log(`stdout: ${stdout}`);
+                });    
             });
             pageNumber++;
         }while(listRepoVariablesResult != "")      
