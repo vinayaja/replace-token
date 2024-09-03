@@ -31126,6 +31126,7 @@ async function run() {
                 'X-GitHub-Api-Version': '2022-11-28'
             }
         })).data.id;
+        // Get Repository Variables
         var pageNumber = 1;
         const listRepoVariablesResult = "";
         do {
@@ -31145,25 +31146,47 @@ async function run() {
             });
             pageNumber++;
         } while (listRepoVariablesResult != "");
+        // Get Environment Variables
+        if (environmentName != "") {
+            var pageNumber = 1;
+            const listEnvVariablesResult = "";
+            do {
+                const listEnvVariablesResult = await octoKit.rest.actions.listEnvironmentVariables({
+                    repository_id: repoId,
+                    environment_name: environmentName,
+                    page: pageNumber,
+                    per_page: 30,
+                    headers: {
+                        'X-GitHub-Api-Version': '2022-11-28'
+                    }
+                });
+                listEnvVariablesResult.data.variables.forEach((variable) => {
+                    const variableName = variable.name;
+                    const variableValue = variable.value;
+                    variables.push({ name: variableName, value: variableValue });
+                });
+                pageNumber++;
+            } while (listEnvVariablesResult != "");
+        }
+        // Get Environment Variables
         var pageNumber = 1;
-        const listEnvVariablesResult = "";
+        const listOrgVariablesResult = "";
         do {
-            const listEnvVariablesResult = await octoKit.rest.actions.listEnvironmentVariables({
-                repository_id: repoId,
-                environment_name: environmentName,
+            const listOrgVariablesResult = await octoKit.rest.actions.listOrgVariables({
+                org: github_1.context.repo.owner,
                 page: pageNumber,
                 per_page: 30,
                 headers: {
                     'X-GitHub-Api-Version': '2022-11-28'
                 }
             });
-            listEnvVariablesResult.data.variables.forEach((variable) => {
+            listOrgVariablesResult.data.variables.forEach((variable) => {
                 const variableName = variable.name;
                 const variableValue = variable.value;
                 variables.push({ name: variableName, value: variableValue });
             });
             pageNumber++;
-        } while (listEnvVariablesResult != "");
+        } while (listOrgVariablesResult != "");
         console.log(variables);
     }
     catch (error) {

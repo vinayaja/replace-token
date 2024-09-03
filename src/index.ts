@@ -40,6 +40,7 @@ export async function run() {
                 }
             })).data.id
         
+        // Get Repository Variables
         var pageNumber:number = 1;
         const listRepoVariablesResult = "";
         do{
@@ -60,10 +61,13 @@ export async function run() {
             pageNumber++;
         }while(listRepoVariablesResult != "") 
         
-        var pageNumber:number = 1;
-        const listEnvVariablesResult = "";
-        do{
-            const listEnvVariablesResult = await octoKit.rest.actions.listEnvironmentVariables({
+        // Get Environment Variables
+        if(environmentName != "")
+        {
+            var pageNumber:number = 1;
+            const listEnvVariablesResult = "";
+            do{
+                const listEnvVariablesResult = await octoKit.rest.actions.listEnvironmentVariables({
                     repository_id: repoId,
                     environment_name: environmentName,
                     page: pageNumber,
@@ -79,7 +83,29 @@ export async function run() {
                 });
                 pageNumber++;
             }while(listEnvVariablesResult != "") 
-     
+        }
+
+        // Get Environment Variables
+        var pageNumber:number = 1;
+        const listOrgVariablesResult = "";
+        do{
+            const listOrgVariablesResult = await octoKit.rest.actions.listOrgVariables({
+                org: context.repo.owner,
+                page: pageNumber,
+                per_page: 30,
+                headers: {
+                    'X-GitHub-Api-Version': '2022-11-28'
+                    }
+                })
+                listOrgVariablesResult.data.variables.forEach((variable) =>{
+                const variableName = variable.name;
+                const variableValue = variable.value;            
+                variables.push({ name: variableName, value: variableValue }); 
+            });
+            pageNumber++;
+        }while(listOrgVariablesResult != "") 
+        
+
         console.log(variables);
 
     }   catch(error){
