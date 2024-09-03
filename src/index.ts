@@ -62,7 +62,7 @@ export async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });   
-                exec(`$env:xyz = "test"`, {'shell':'pwsh'}, (error, stdout, stderr) => {
+                exec(`get-childitem`, {'shell':'pwsh'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
