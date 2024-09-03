@@ -31150,7 +31150,7 @@ async function run() {
                 const variableValue = variable.value;
                 var command = '"echo "' + variableName + "=" + variableValue + '" >> $GITHUB_ENV"';
                 console.log(command);
-                (0, child_process_1.exec)('set ${variableName}=${variableValue}', (error, stdout, stderr) => {
+                (0, child_process_1.exec)(`set ${variableName}=${variableValue}`, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
@@ -31161,7 +31161,7 @@ async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });
-                (0, child_process_1.exec)('set bbbhhs=44545', (error, stdout, stderr) => {
+                (0, child_process_1.exec)(`echo "abcdefg=123456" >> $GITHUB_ENV`, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
