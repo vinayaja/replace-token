@@ -31146,8 +31146,8 @@ async function run() {
                 }
             });
             listRepoVariablesResult.data.variables.forEach((variable) => {
-                const variableName = "${variable.name}";
-                const variableValue = "${variable.value}";
+                const variableName = variable.name;
+                const variableValue = variable.value;
                 var command = "echo " + variableName + "=" + variableValue + " >> $GITHUB_ENV";
                 (0, child_process_1.exec)(command, (error, stdout, stderr) => {
                     if (error) {
