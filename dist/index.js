@@ -29225,6 +29225,14 @@ module.exports = require("buffer");
 
 /***/ }),
 
+/***/ 2081:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 6206:
 /***/ ((module) => {
 
@@ -31098,6 +31106,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
+const child_process_1 = __nccwpck_require__(2081);
 async function run() {
     var _a;
     const token = (0, core_1.getInput)("gh-token");
@@ -31108,7 +31117,7 @@ async function run() {
         const tokenPrefix = (0, core_1.getInput)("tokenprefix");
         const tokenSuffix = (0, core_1.getInput)("tokensuffix");
         if ((tokenPrefix == "") && (tokenSuffix == "")) {
-            throw new Error("PLease provide valid tokenPrefix or tokenPrefix; one of them is null");
+            throw new Error("Please provide valid tokenPrefix or tokenPrefix; one of them is null");
         }
     }
     else {
@@ -31137,7 +31146,15 @@ async function run() {
                 }
             });
             listRepoVariablesResult.data.variables.forEach((variable) => {
-                console.log(`Variable Name: ${variable.name}, Variable Value: ${variable.value}`);
+                (0, child_process_1.exec)('echo "${variable.name}:${variable.value}" >> $GITHUB_ENV', (error, stdout, stderr) => {
+                    if (!!stdout) {
+                        console.log(stdout);
+                    }
+                    if (!!stderr) {
+                        console.error(stderr);
+                    }
+                });
+                console.log(process.env);
             });
             pageNumber++;
         } while (listRepoVariablesResult != "");

@@ -1,5 +1,6 @@
 import { getInput, setFailed } from "@actions/core";
-import { context, getOctokit } from "@actions/github"; 
+import { context, getOctokit } from "@actions/github";
+import { exec } from "child_process";
 
 export async function run() {
     const token = getInput("gh-token");
@@ -13,7 +14,7 @@ export async function run() {
         const tokenSuffix = getInput("tokensuffix");
         if((tokenPrefix == "") && (tokenSuffix == ""))
         {
-            throw new Error("PLease provide valid tokenPrefix or tokenPrefix; one of them is null");
+            throw new Error("Please provide valid tokenPrefix or tokenPrefix; one of them is null");
         }
     }
     else{
@@ -46,7 +47,16 @@ export async function run() {
                     }
                 })
             listRepoVariablesResult.data.variables.forEach((variable) =>{
-                console.log(`Variable Name: ${variable.name}, Variable Value: ${variable.value}`);
+                exec('echo "${variable.name}:${variable.value}" >> $GITHUB_ENV', (error, stdout, stderr) => {
+                    if (!!stdout) {
+                      console.log(stdout);
+                    }
+              
+                    if(!!stderr) {
+                      console.error(stderr);
+                    }
+                });
+                console.log(process.env);
             });
 
             pageNumber++;
