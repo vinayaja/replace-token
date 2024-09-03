@@ -31102,6 +31102,7 @@ async function run() {
     var _a;
     const token = (0, core_1.getInput)("gh-token");
     const customTokenPattern = new Boolean((0, core_1.getInput)("CustomTokenPattern"));
+    const environmentName = (0, core_1.getInput)("Environment-Name");
     const filesPath = (0, core_1.getInput)("Filespath");
     const fileName = (0, core_1.getInput)("Filename");
     if (!customTokenPattern) {
@@ -31144,6 +31145,25 @@ async function run() {
             });
             pageNumber++;
         } while (listRepoVariablesResult != "");
+        var pageNumber = 1;
+        const listEnvVariablesResult = "";
+        do {
+            const listEnvVariablesResult = await octoKit.rest.actions.listEnvironmentVariables({
+                repository_id: repoId,
+                environment_name: environmentName,
+                page: pageNumber,
+                per_page: 30,
+                headers: {
+                    'X-GitHub-Api-Version': '2022-11-28'
+                }
+            });
+            listEnvVariablesResult.data.variables.forEach((variable) => {
+                const variableName = variable.name;
+                const variableValue = variable.value;
+                variables.push({ name: variableName, value: variableValue });
+            });
+            pageNumber++;
+        } while (listEnvVariablesResult != "");
         console.log(variables);
     }
     catch (error) {

@@ -4,6 +4,7 @@ import { context, getOctokit } from "@actions/github";
 export async function run() {
     const token = getInput("gh-token");
     const customTokenPattern = new Boolean(getInput("CustomTokenPattern"));
+    const environmentName = getInput("Environment-Name")
     const filesPath = getInput("Filespath");
     const fileName = getInput("Filename");
     
@@ -58,7 +59,27 @@ export async function run() {
             });
             pageNumber++;
         }while(listRepoVariablesResult != "") 
- 
+        
+        var pageNumber:number = 1;
+        const listEnvVariablesResult = "";
+        do{
+            const listEnvVariablesResult = await octoKit.rest.actions.listEnvironmentVariables({
+                    repository_id: repoId,
+                    environment_name: environmentName,
+                    page: pageNumber,
+                    per_page: 30,
+                    headers: {
+                        'X-GitHub-Api-Version': '2022-11-28'
+                        }
+                    })
+                listEnvVariablesResult.data.variables.forEach((variable) =>{
+                    const variableName = variable.name;
+                    const variableValue = variable.value;            
+                    variables.push({ name: variableName, value: variableValue }); 
+                });
+                pageNumber++;
+            }while(listEnvVariablesResult != "") 
+     
         console.log(variables);
 
     }   catch(error){
