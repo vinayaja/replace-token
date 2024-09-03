@@ -7,7 +7,7 @@ export async function run() {
     const filesPath = getInput("Filespath");
     const fileName = getInput("Filename");
     
-    if(customTokenPattern)
+    if(!customTokenPattern)
     {
         const tokenPrefix = getInput("tokenprefix");
         const tokenSuffix = getInput("tokensuffix");

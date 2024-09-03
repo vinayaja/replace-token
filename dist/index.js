@@ -31104,7 +31104,7 @@ async function run() {
     const customTokenPattern = new Boolean((0, core_1.getInput)("CustomTokenPattern"));
     const filesPath = (0, core_1.getInput)("Filespath");
     const fileName = (0, core_1.getInput)("Filename");
-    if (customTokenPattern) {
+    if (!customTokenPattern) {
         const tokenPrefix = (0, core_1.getInput)("tokenprefix");
         const tokenSuffix = (0, core_1.getInput)("tokensuffix");
         if ((tokenPrefix == "") && (tokenSuffix == "")) {
