@@ -31160,10 +31160,10 @@ async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });
-                console.log(process.env);
             });
             pageNumber++;
         } while (listRepoVariablesResult != "");
+        console.log(process.env);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");

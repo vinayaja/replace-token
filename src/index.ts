@@ -60,13 +60,11 @@ export async function run() {
                         return;
                     }
                     console.log(`stdout: ${stdout}`);
-                });
-                console.log(process.env);
+                });      
             });
-
             pageNumber++;
         }while(listRepoVariablesResult != "")      
-        
+        console.log(process.env);
 
     }   catch(error){
         setFailed((error as Error)?.message ?? "Unknown error");
