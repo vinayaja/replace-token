@@ -31195,14 +31195,13 @@ async function run() {
                 pageNumber++;
             } while (listOrgVariablesResult != "");
         }
-        console.log(variables);
         let count = 0;
         const tokenizedFiles = getFiles(filesPath);
         console.log(tokenizedFiles);
         const envVariables = process.env;
         for (const tokenizedFile of tokenizedFiles) {
             console.log(`\nChecking and replacing tokens in ${tokenizedFile}`);
-            let rawContent = fs.readFileSync(`${filesPath}/${tokenizedFile}`, 'utf-8');
+            let rawContent = fs.readFileSync(`${tokenizedFile}`, 'utf-8');
             // Loop through each environment variable
             for (const [key, value] of Object.entries(envVariables)) {
                 const matchValue = `${tokenPrefix}${key}${tokenSuffix}`;
@@ -31223,7 +31222,7 @@ async function run() {
             }
             // Check if any tokens were replaced
             if (count > 0) {
-                fs.writeFileSync(`${filesPath}/${tokenizedFile}`, rawContent);
+                fs.writeFileSync(`${tokenizedFile}`, rawContent);
                 if (rawContent.includes(tokenPrefix)) {
                     console.warn(`New token found in ${tokenizedFile}, Update below variables, else functionality will fail`);
                     // Logic to display new tokens (not implemented in original PowerShell code)

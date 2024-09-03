@@ -24,7 +24,7 @@ export async function run() {
             } 
             else if(name.endsWith(fileName))
             {
-            files_.push(name);
+                files_.push(name);
             }
         }
         return files_;
@@ -115,8 +115,6 @@ export async function run() {
                 pageNumber++;
             }while(listOrgVariablesResult != "") 
         }
-
-        console.log(variables);
         
         let count:number = 0;
         const tokenizedFiles = getFiles(filesPath)
@@ -125,7 +123,7 @@ export async function run() {
 
         for (const tokenizedFile of tokenizedFiles) {
             console.log(`\nChecking and replacing tokens in ${tokenizedFile}`);
-            let rawContent = fs.readFileSync(`${filesPath}/${tokenizedFile}`, 'utf-8');
+            let rawContent = fs.readFileSync(`${tokenizedFile}`, 'utf-8');
             // Loop through each environment variable
             for (const [key, value] of Object.entries(envVariables)) {
                 const matchValue = `${tokenPrefix}${key}${tokenSuffix}`;
@@ -148,7 +146,7 @@ export async function run() {
         
             // Check if any tokens were replaced
             if (count > 0) {
-                fs.writeFileSync(`${filesPath}/${tokenizedFile}`, rawContent);
+                fs.writeFileSync(`${tokenizedFile}`, rawContent);
         
                 if (rawContent.includes(tokenPrefix)) {
                     console.warn(`New token found in ${tokenizedFile}, Update below variables, else functionality will fail`);
