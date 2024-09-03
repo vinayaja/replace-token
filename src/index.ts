@@ -49,7 +49,7 @@ export async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) =>{
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = '"$env:' + variableName + "=" + variableValue + '"';
+                var command = '$env:' + variableName + '="' + variableValue + '"';
                 console.log(command);
                 exec(command, {'shell':'pwsh'}, (error, stdout, stderr) => {
                     if (error) {
@@ -62,7 +62,7 @@ export async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });   
-                exec('$env:abc = "test"', {'shell':'pwsh'}, (error, stdout, stderr) => {
+                exec(`$env:xyz = "test"`, {'shell':'pwsh'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;

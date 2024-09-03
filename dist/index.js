@@ -31148,7 +31148,7 @@ async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) => {
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = '"$env:' + variableName + "=" + variableValue + '"';
+                var command = '$env:' + variableName + '="' + variableValue + '"';
                 console.log(command);
                 (0, child_process_1.exec)(command, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
                     if (error) {
@@ -31161,7 +31161,7 @@ async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });
-                (0, child_process_1.exec)('$env:abc = "test"', { 'shell': 'pwsh' }, (error, stdout, stderr) => {
+                (0, child_process_1.exec)(`$env:xyz = "test"`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
