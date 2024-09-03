@@ -51,7 +51,7 @@ export async function run() {
                 const variableValue = variable.value;
                 var command = '"echo "' + variableName + "=" + variableValue + '" >> $GITHUB_ENV"';
                 console.log(command);
-                exec(command, (error, stdout, stderr) => {
+                exec(`echo "${variableName}=${variableValue}" >> $GITHUB_ENV`, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
