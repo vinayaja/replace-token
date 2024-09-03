@@ -85,26 +85,35 @@ export async function run() {
             }while(listEnvVariablesResult != "") 
         }
 
-        // Get Environment Variables
-        var pageNumber:number = 1;
-        const listOrgVariablesResult = "";
-        do{
-            const listOrgVariablesResult = await octoKit.rest.actions.listOrgVariables({
-                org: context.repo.owner,
-                page: pageNumber,
-                per_page: 30,
-                headers: {
-                    'X-GitHub-Api-Version': '2022-11-28'
-                    }
-                })
+        // Get Org Variables
+        const orgName =  (await octoKit.rest.orgs.get({
+            org: context.repo.owner,
+            headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+                }
+            })).data.name
+
+        if(orgName != undefined)
+        {
+            var pageNumber:number = 1;
+            const listOrgVariablesResult = "";
+            do{
+                const listOrgVariablesResult = await octoKit.rest.actions.listOrgVariables({
+                    org: orgName,
+                    page: pageNumber,
+                    per_page: 30,
+                    headers: {
+                        'X-GitHub-Api-Version': '2022-11-28'
+                        }
+                    })
                 listOrgVariablesResult.data.variables.forEach((variable) =>{
                 const variableName = variable.name;
                 const variableValue = variable.value;            
                 variables.push({ name: variableName, value: variableValue }); 
-            });
-            pageNumber++;
-        }while(listOrgVariablesResult != "") 
-        
+                });
+                pageNumber++;
+            }while(listOrgVariablesResult != "") 
+        }
 
         console.log(variables);
 
