@@ -31148,7 +31148,7 @@ async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) => {
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = '"New-Item -Path Env:/' + variableName + ' -Value "' + variableValue + '""';
+                var command = '"New-Item -Path Env:/' + variableName + ' -Value ' + "'" + variableValue + "'" + '"';
                 console.log(command);
                 (0, child_process_1.exec)(command, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
                     if (error) {
