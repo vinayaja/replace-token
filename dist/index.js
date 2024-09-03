@@ -31148,9 +31148,9 @@ async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) => {
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = '$env:' + variableName + '="' + variableValue + '"';
-                console.log(command);
-                (0, child_process_1.exec)(command, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
+                // var command = '"New-Item -Path Env:' + variableName + ' -Value ' + variableValue + '"';
+                //console.log(command);
+                (0, child_process_1.exec)(`[Environment]::SetEnvironmentVariable('${variableName}','${variableValue}')`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
@@ -31161,7 +31161,7 @@ async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });
-                (0, child_process_1.exec)(`get-childitem`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
+                (0, child_process_1.exec)(`get-childitem env:`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
