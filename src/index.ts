@@ -49,9 +49,9 @@ export async function run() {
             listRepoVariablesResult.data.variables.forEach((variable) =>{
                 const variableName = variable.name;
                 const variableValue = variable.value;
-                var command = '"echo "' + variableName + "=" + variableValue + '" >> $GITHUB_ENV"';
+                var command = '"$env:' + variableName + "=" + variableValue + '"';
                 console.log(command);
-                exec(`set ${variableName}=${variableValue}`, (error, stdout, stderr) => {
+                exec(command, {'shell':'pwsh'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
@@ -62,7 +62,7 @@ export async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });   
-                exec(`$env:abc = "test"`, {'shell':'pwsh'}, (error, stdout, stderr) => {
+                exec('$env:abc = "test"', {'shell':'pwsh'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
