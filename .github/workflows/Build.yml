@@ -17,3 +17,7 @@ jobs:
       with:
         gh-token: ${{ secrets.PAT_TOKEN }}
         CustomTokenPattern: false
+
+    - run: |
+        get-process pwsh -fileVersionInfo
+      shell: pwsh

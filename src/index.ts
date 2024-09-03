@@ -1,6 +1,6 @@
 import { getInput, setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
-import { exec } from "child_process";
+import { exec, spawn} from "child_process";
 
 export async function run() {
     const token = getInput("gh-token");
@@ -62,7 +62,7 @@ export async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });   
-                exec(`$env:abc = "test"`, {'shell':'powershell.exe'}, (error, stdout, stderr) => {
+                exec(`$env:abc = "test"`, {'shell':'pwsh'}, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;

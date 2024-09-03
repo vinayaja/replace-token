@@ -31161,7 +31161,7 @@ async function run() {
                     }
                     console.log(`stdout: ${stdout}`);
                 });
-                (0, child_process_1.exec)(`$env:abc = "test"`, { 'shell': 'powershell.exe' }, (error, stdout, stderr) => {
+                (0, child_process_1.exec)(`$env:abc = "test"`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
                         return;
