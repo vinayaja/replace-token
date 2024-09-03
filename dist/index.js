@@ -31095,43 +31095,32 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getFiles = getFiles;
 exports.run = run;
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
-async function getFiles(dir, files_) {
-    const fs = __nccwpck_require__(7147);
-    files_ = files_ || [];
-    var files = fs.readdirSync(dir);
-    for (var i in files) {
-        var name = dir + '/' + files[i];
-        if (fs.statSync(name).isDirectory()) {
-            getFiles(name, files_);
-        }
-        else {
-            files_.push(name);
-        }
-    }
-    return files_;
-}
 async function run() {
     var _a;
     const token = (0, core_1.getInput)("gh-token");
-    const customTokenPattern = new Boolean((0, core_1.getInput)("CustomTokenPattern"));
     const environmentName = (0, core_1.getInput)("Environment-Name");
     const orgName = (0, core_1.getInput)("Org-Name");
     const filesPath = (0, core_1.getInput)("Filespath");
     const fileName = (0, core_1.getInput)("Filename");
-    if (!customTokenPattern) {
-        const tokenPrefix = (0, core_1.getInput)("tokenprefix");
-        const tokenSuffix = (0, core_1.getInput)("tokensuffix");
-        if ((tokenPrefix == "") && (tokenSuffix == "")) {
-            throw new Error("Please provide valid tokenPrefix or tokenPrefix; one of them is null");
+    const tokenPrefix = (0, core_1.getInput)("tokenprefix") || "#{";
+    const tokenSuffix = (0, core_1.getInput)("tokensuffix") || "}#";
+    const fs = __nccwpck_require__(7147);
+    let files_ = [];
+    function getFiles(dir) {
+        var files = fs.readdirSync(dir);
+        for (var i in files) {
+            var name = dir + '\\' + files[i];
+            if (fs.statSync(name).isDirectory()) {
+                getFiles(name);
+            }
+            else if (name.endsWith(fileName)) {
+                files_.push(name);
+            }
         }
-    }
-    else {
-        const tokenPrefix = "#{";
-        const tokenSuffix = "}#";
+        return files_;
     }
     const octoKit = (0, github_1.getOctokit)(token);
     try {
@@ -31207,7 +31196,45 @@ async function run() {
             } while (listOrgVariablesResult != "");
         }
         console.log(variables);
-        console.log(getFiles(filesPath, fileName));
+        let count = 0;
+        const tokenizedFiles = getFiles(filesPath);
+        console.log(tokenizedFiles);
+        const envVariables = process.env;
+        for (const tokenizedFile of tokenizedFiles) {
+            console.log(`\nChecking and replacing tokens in ${tokenizedFile}`);
+            let rawContent = fs.readFileSync(`${filesPath}/${tokenizedFile}`, 'utf-8');
+            // Loop through each environment variable
+            for (const [key, value] of Object.entries(envVariables)) {
+                const matchValue = `${tokenPrefix}${key}${tokenSuffix}`;
+                if (rawContent.includes(matchValue)) {
+                    rawContent = rawContent.replace(new RegExp(matchValue, 'g'), value);
+                    console.log(`${key} value updated in ${tokenizedFile}`);
+                    count++;
+                }
+            }
+            // Loop through additional variables
+            for (const variable of variables) {
+                const matchValue = `${tokenPrefix}${variable.name}${tokenSuffix}`;
+                if (rawContent.includes(matchValue)) {
+                    rawContent = rawContent.replace(new RegExp(matchValue, 'g'), variable.value);
+                    console.log(`${variable.name} value updated in ${tokenizedFile}`);
+                    count++;
+                }
+            }
+            // Check if any tokens were replaced
+            if (count > 0) {
+                fs.writeFileSync(`${filesPath}/${tokenizedFile}`, rawContent);
+                if (rawContent.includes(tokenPrefix)) {
+                    console.warn(`New token found in ${tokenizedFile}, Update below variables, else functionality will fail`);
+                    // Logic to display new tokens (not implemented in original PowerShell code)
+                    break;
+                }
+            }
+            else {
+                console.log(`No tokens found in ${tokenizedFile}`);
+            }
+            console.log("\n#################################################################");
+        }
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");

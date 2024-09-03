@@ -12,9 +12,6 @@ inputs:
   Org-Name:
     description: "organization Name"
     required: false
-  CustomTokenPattern:
-    description: "Run id of workflow"
-    required: true
   tokenprefix:
     description: "Json payload"
     required: false
