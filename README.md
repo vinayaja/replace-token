@@ -1,58 +1,72 @@
-# push-workflow
+# Replace tokens
 
-### Sample workflow to push deployment or workflow run in same repo
+Simple GitHub Action to replace tokens in files. This action can fetch variables stored in Github variables (repository variables, org variables and enviornment variables) and replace them in desired files. 
 
-```yaml
-# File: .github/workflows/workflow.yml
+Please note that variable substitution is case sensitive, please try to store tokens in uppercase in Tokenized files.
 
-on: push
+## Inputs
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-    # checkout the repo
-    - name: 'Checkout Github Action' 
-      uses: actions/checkout@4
+- `gh-token` - Github Token or Pat Token (Required)
+- `Environment-Name` - Environment Name, this is required to fetch environment variables from Github Environment (Optional)
+- `Org-Name` - organization Name - This is required to fetch org level variable values (Optional)
+- `tokenprefix` - Token prefix, default is `#{` (Optional)
+- `tokensuffix` - Token suffix, default is `}#` (Optional)
+- `Filespath` - file path of tokenized files (Required)
+- `Filename` - tokenized file name, single file or extenstion eg, .json, .xml (Required)
 
-    - name: Setup Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: '20'
+## Example
 
-    - name: 'Run workflow'
-      uses: vinayaja/push-workflow@v1.1.0
-      with:
-        gh-token: ${{ github.token }}
-        run-id: "xxxxxxxxxx"
-        payload: '{"env": "<env>"}'
+If you want to replace `#{APPNAME}#` in tokenized files, add the action to your workflow like this:
 
-
-### Sample workflow to push deployment or workflow run in same repo
-
-```yaml
-# File: .github/workflows/workflow.yml
-
-on: push
+```yml
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
     steps:
-    # checkout the repo
     - name: 'Checkout Github Action' 
       uses: actions/checkout@4
 
-    - name: Setup Node
-      uses: actions/setup-node@v1
+    - uses: vinayaja/replace-tokens@v1.0.0
       with:
-        node-version: '20'
+        gh-token: ${{ secrets.PAT_TOKEN }} 
+        Environment-Name: 'dev'  
+        Filespath: ${{ github.workspace}}/files 
+        FileName: '.json'
+```
+If you want to use a different token format, you can specify a custom token prefix/suffix. For example, to replace just tokens like `{APPLICATION}` you could add:
 
-    - name: 'Run workflow'
-      uses: vinayaja/push-workflow@1.1.0
-      with:
-        gh-token: ${{ secrets.PAT_TOKEN }} # PAT token is required to access remore repo actions
-        run-id: "xxxxxxxxx"
-        payload: '{}'
-        remote-branch: 'branch name'
-        remote-repo: 'owner/repository'
+```yml
+
+- uses: vinayaja/replace-tokens@v1.0.0
+  with:
+    gh-token: ${{ secrets.PAT_TOKEN }} 
+    Environment-Name: 'dev'  
+    Filespath: ${{ github.workspace}}/files 
+    FileName: '.json'
+    tokenprefix: '{'
+    tokensuffix: '}'
+```
+
+example of tokenized json file
+
+```json
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "paramAPPServiceName": {
+            "value": "#{APPServiceName}#"
+        },
+        "paramAPIName": {
+            "value": "#{APIName}#"
+        },
+        "paramStorageAccountName": {
+            "value": "#{StorageAccountName}#"
+        }
+    }
+}
+
+```
