@@ -152,8 +152,9 @@ export async function run() {
                 fs.writeFileSync(`${tokenizedFile}`, rawContent);
         
                 if (rawContent.includes(tokenPrefix)) {
-                    console.warn(`New token found in ${tokenizedFile}, Update below variables, else functionality will fail`);
-                    // Logic to display new tokens (not implemented in original PowerShell code)
+                    var pattern = /(?<={)[^\}]+/;
+                    let newvar:any = rawContent.match(pattern)
+                    console.warn(`New token ${newvar[0]} found in ${tokenizedFile}, Update below variables, else functionality will fail`);
                     break;
                 }
             } else {
