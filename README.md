@@ -1,4 +1,4 @@
-# Replace tokens
+# Replace token
 
 Simple GitHub Action to replace tokens in files. This action can fetch variables stored in Github variables (repository variables, org variables and enviornment variables) and replace them in desired files. 
 
@@ -28,7 +28,7 @@ jobs:
     - name: 'Checkout Github Action' 
       uses: actions/checkout@4
 
-    - uses: vinayaja/replace-tokens@v1.0.0
+    - uses: vinayaja/replace-token@v1.0.0
       with:
         gh-token: ${{ secrets.PAT_TOKEN }} 
         Environment-Name: 'dev'  
@@ -39,7 +39,7 @@ If you want to use a different token format, you can specify a custom token pref
 
 ```yml
 
-- uses: vinayaja/replace-tokens@v1.0.0
+- uses: vinayaja/replace-token@v1.0.0
   with:
     gh-token: ${{ secrets.PAT_TOKEN }} 
     Environment-Name: 'dev'  
