@@ -31225,9 +31225,7 @@ async function run() {
             if (count > 0) {
                 fs.writeFileSync(`${tokenizedFile}`, rawContent);
                 if (rawContent.includes(tokenPrefix)) {
-                    var pattern = "/(?<=" + tokenPrefix + ")[^\\" + tokenSuffix + "]+/";
-                    let newvar = rawContent.match(pattern);
-                    console.warn(`New token ${newvar[0]} found in ${tokenizedFile}, Update below variables, else functionality will fail`);
+                    console.warn(`New token found in ${tokenizedFile}, Update below variables, else functionality will fail`);
                     break;
                 }
             }
