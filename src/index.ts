@@ -131,7 +131,7 @@ export async function run() {
                 const matchValue = `${tokenPrefix}${key}${tokenSuffix}`;
                 console.log(matchValue)
                 if (rawContent.includes(matchValue)) {
-                    rawContent = rawContent.replace(new RegExp(matchValue, 'g'), value);
+                    rawContent = rawContent.replace(new RegExp(matchValue, 'i,g'), value);
                     console.log(`${key} value updated in ${tokenizedFile}`);
                     count++;
                 }
@@ -142,7 +142,7 @@ export async function run() {
                 const matchValue = `${tokenPrefix}${variable.name}${tokenSuffix}`;
                 console.log(matchValue)
                 if (rawContent.includes(matchValue)) {
-                    rawContent = rawContent.replace(new RegExp(matchValue, 'g'), variable.value);
+                    rawContent = rawContent.replace(new RegExp(matchValue, 'i,g'), variable.value);
                     console.log(`${variable.name} value updated in ${tokenizedFile}`);
                     count++;
                 }
