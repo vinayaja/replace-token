@@ -49,7 +49,7 @@ If you want to use a different token format, you can specify a custom token pref
     tokensuffix: '}'
 ```
 
-example of tokenized json file
+### Example of tokenized json file
 
 ```json
 
@@ -71,5 +71,6 @@ example of tokenized json file
 
 ```
 
-example of variables store in github
+### Example of variables store in github
+
 ![alt text](image.png)
