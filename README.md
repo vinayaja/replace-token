@@ -58,15 +58,18 @@ example of tokenized json file
     "contentVersion": "1.0.0.0",
     "parameters": {
         "paramAPPServiceName": {
-            "value": "#{APPServiceName}#"
+            "value": "#{APPSERVICENAME}#"
         },
         "paramAPIName": {
-            "value": "#{APIName}#"
+            "value": "#{APINAME}#"
         },
         "paramStorageAccountName": {
-            "value": "#{StorageAccountName}#"
+            "value": "#{STORAGEACCOUNTNAME}#"
         }
     }
 }
 
 ```
+
+example of variables store in github
+![alt text](image.png)
