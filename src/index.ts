@@ -120,16 +120,16 @@ export async function run() {
         const tokenizedFiles = getFiles(filesPath)
         console.log(`\nFound below files at ${filesPath}`)
         console.log(tokenizedFiles)
+        
         const envVariables = process.env;
 
         for (const tokenizedFile of tokenizedFiles) {
             console.log(`\nChecking and replacing tokens in ${tokenizedFile}`);
+            
             let rawContent = fs.readFileSync(`${tokenizedFile}`, 'utf-8');
-            console.log(rawContent)
             // Loop through each environment variable
             for (const [key, value] of Object.entries(envVariables)) {
                 const matchValue = `${tokenPrefix}${key}${tokenSuffix}`;
-                console.log(matchValue)
                 if (rawContent.includes(matchValue)) {
                     rawContent = rawContent.replace(new RegExp(matchValue, 'g'), value);
                     console.log(`${key} value updated in ${tokenizedFile}`);
@@ -140,7 +140,6 @@ export async function run() {
             // Loop through additional variables
             for (const variable of variables) {
                 const matchValue = `${tokenPrefix}${variable.name}${tokenSuffix}`;
-                console.log(matchValue)
                 if (rawContent.includes(matchValue)) {
                     rawContent = rawContent.replace(new RegExp(matchValue, 'g'), variable.value);
                     console.log(`${variable.name} value updated in ${tokenizedFile}`);
@@ -162,7 +161,6 @@ export async function run() {
             }
             console.log("\n#################################################################");
         }
-
 
     }   catch(error){
         setFailed((error as Error)?.message ?? "Unknown error");
