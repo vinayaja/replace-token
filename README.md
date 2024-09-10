@@ -28,7 +28,7 @@ jobs:
     - name: 'Checkout Github Action' 
       uses: actions/checkout@4
 
-    - uses: vinayaja/replace-token@v1.0.0
+    - uses: vinayaja/replace-token@v1.0.1
       with:
         gh-token: ${{ secrets.PAT_TOKEN }} 
         Environment-Name: 'dev'  
@@ -39,7 +39,7 @@ If you want to use a different token format, you can specify a custom token pref
 
 ```yml
 
-- uses: vinayaja/replace-token@v1.0.0
+- uses: vinayaja/replace-token@v1.0.1
   with:
     gh-token: ${{ secrets.PAT_TOKEN }} 
     Environment-Name: 'dev'  
